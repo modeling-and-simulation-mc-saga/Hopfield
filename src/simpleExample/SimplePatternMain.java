@@ -1,9 +1,8 @@
 package simpleExample;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Random;
-import model.AbstractPatterns;
 import model.Hopfield;
 
 /**
@@ -13,19 +12,23 @@ import model.Hopfield;
 public class SimplePatternMain {
 
     public static void main(String args[]) throws IOException {
-        int maxT = 100;
+        int maxT = 10;
         SimplePattern pattern = new SimplePattern();
         double lambda = 1. / pattern.getSize();
         long seed = 48L;
         Random myRandom = new Random(seed);
         Hopfield sys = new Hopfield(pattern, lambda, myRandom);
-        try ( BufferedWriter out = 
-                Hopfield.openWriter("SimplePattern.txt")) {
+        try ( PrintStream out = new PrintStream("SimplePattern.txt")) {
             for (int t = 0; t < maxT; t++) {
+                //one Monte Carlo step update at zero temperature
                 sys.updateZero();
-                //パターンとのoverlapを求める
-                //Energyを求める
-                //時間t, パターンとのoverlap、エネルギーをoutへ出力
+                //Overlapping between current and memorized patterns
+                double m[] = sys.overlap();
+                //Energy
+                double energy = sys.getEnergy();
+                //Output of t, overlap, energy
+                String str = t +" "+m[0]+" "+energy;
+                out.println(str);
             }
         }
     }

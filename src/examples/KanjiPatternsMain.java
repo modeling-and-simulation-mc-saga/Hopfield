@@ -1,7 +1,7 @@
 package examples;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Random;
 import java.util.StringJoiner;
 import model.*;
@@ -14,16 +14,15 @@ public class KanjiPatternsMain {
 
     /**
      * @param args the command line arguments
+     * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
         int maxT = 100;
         KanjiPatterns pattern = new KanjiPatterns();
-        int numPatterns = pattern.getNumPatterns();
         double lambda = 1. / pattern.getSize();
         Random myRandom = new Random(29874L);
         Hopfield sys = new Hopfield(pattern, lambda, myRandom);
-        try ( BufferedWriter out 
-                = Hopfield.openWriter("kanjiPatterns.txt")) {
+        try ( PrintStream out = new PrintStream("kanjiPatterns.txt")) {
             for (int t = 0; t < maxT; t++) {
                 sys.updateZero();
                 double m[] = sys.overlap();
@@ -33,8 +32,7 @@ public class KanjiPatternsMain {
                     sj.add(String.valueOf(x));
                 }
                 String str = t + " " + sj.toString() + " " + energy;
-                out.write(str);
-                out.newLine();
+                out.println(str);
             }
         }
 
@@ -42,8 +40,7 @@ public class KanjiPatternsMain {
         double temperature = 10;
         maxT = 1000;
         int tt = 0;
-        try ( BufferedWriter out = 
-                Hopfield.openWriter("kanjiPatternsFinite.txt")) {
+        try ( PrintStream out = new PrintStream("kanjiPatternsFinite.txt")) {
             for (int k = 0; k < 10; k++) {
                 for (int t = 0; t < maxT; t++) {
                     sys.update(temperature);
@@ -54,8 +51,7 @@ public class KanjiPatternsMain {
                         sj.add(String.valueOf(x));
                     }
                     String str = tt + " " + sj.toString() + " " + energy;
-                    out.write(str);
-                    out.newLine();
+                    out.println(str);
                     tt++;
                 }
                 temperature /= 2.;

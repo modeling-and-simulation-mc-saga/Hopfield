@@ -1,10 +1,5 @@
 package model;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 import java.util.Random;
 
 /**
@@ -178,11 +173,4 @@ public class Hopfield {
     public void setNumPatterns(int numPatterns) {
         generateJ(numPatterns);
     }
-
-    public static BufferedWriter openWriter(String filename)
-            throws FileNotFoundException {
-        FileOutputStream fStream = new FileOutputStream(new File(filename));
-        return new BufferedWriter(new OutputStreamWriter(fStream));
-    }
-
 }

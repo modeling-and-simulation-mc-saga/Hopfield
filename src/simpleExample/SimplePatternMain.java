@@ -21,14 +21,14 @@ public class SimplePatternMain {
         try ( PrintStream out = new PrintStream("SimplePattern.txt")) {
             for (int t = 0; t < maxT; t++) {
                 //one Monte Carlo step update at zero temperature
-                sys.updateZero();
+
                 //Overlapping between current and memorized patterns
-                double m[] = sys.overlap();
+
                 //Energy
-                double energy = sys.getEnergy();
+
                 //Output of t, overlap, energy
-                String str = t +" "+m[0]+" "+energy;
-                out.println(str);
+
+                //out.println(str);
             }
         }
     }
